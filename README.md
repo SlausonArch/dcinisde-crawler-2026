@@ -1,8 +1,8 @@
-# 갤창랭킹 v2.1.0
+# 갤창랭킹 v2.1.1
 
 디시인사이드(DCInside) 갤러리의 게시글 데이터를 크롤링하여 갤러들의 활동 순위(갤창랭킹)를 집계하는 Windows GUI 프로그램입니다.
 
-> **Note**: 본 프로젝트는 [hanel2527](https://github.com/hanel2527) 님의 `dcinisde-crawler.ver.2`를 기반으로, 최신 디시인사이드 차단 우회 및 버그 패치를 적용한 유지보수 버전입니다.
+> **Note**: 본 프로젝트는 [hanel2527](https://github.com/hanel2527) 님의 `dcinisde-crawler.ver.2`를 기반으로, 최신 디시인사이드 차단 우회, 미니 갤러리 지원 및 버그 패치를 적용한 유지보수 버전입니다.
 > 
 > - **Original Author**: hanel2527
 > - **Maintainer / Updated by**: [SlausonArch](https://github.com/SlausonArch)
@@ -15,8 +15,17 @@
 
 ---
 
-## 🛠️ v2.1.0 패치 내역 (2026.09)
+## 🛠️ 패치 내역
 
+### v2.1.1 (2026.09)
+- **미니 갤러리(Mini Gallery) 크롤링 완벽 지원**:
+  - 디시인사이드 미니 갤러리(`https://gall.dcinside.com/mini/board/lists?id=...`) 크롤링 지원 추가
+  - UI에 **`미니 갤러리`** 체크박스 추가 및 마이너/미니 갤러리 상호 배타 선택 기능 적용
+    - ☐ 마이너 갤러리  ☐ 미니 갤러리 → **정규(메이저) 갤러리**
+    - ☑ 마이너 갤러리  ☐ 미니 갤러리 → **마이너 갤러리**
+    - ☐ 마이너 갤러리  ☑ 미니 갤러리 → **미니 갤러리**
+
+### v2.1.0 (2026.09)
 - **디시인사이드 503 오류(서버 사용할 수 없음) 해결**:
   - 디시인사이드 서버의 봇/크롤러 차단에 대응하여 브라우저 `User-Agent` 및 `Accept` 헤더, gzip 자동 압축 해제를 전송하는 `DcWebClient` 구현
   - 연속 크롤링 시 `WebClient` 헤더 초기화로 인한 503 재발 현상 해결

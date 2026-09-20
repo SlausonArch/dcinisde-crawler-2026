@@ -303,30 +303,32 @@ gcrk.Crawler();
 
         int initPage, endPage;
         DateTime initDate, endDate;
-        bool isMinor;
-        public string gallId, gallName, gallUrl, version = "v2.1.0";
+        bool isMinor, isMini;
+        public string gallId, gallName, gallUrl, version = "v2.1.1";
         List<UserRank> userList = new List<UserRank>();
         //List<UserData> gallDatas = new List<UserData>();
 
-        public GallchangrankingCrawler(int initPage, int endPage, string gallId, bool isMinor)
+        public GallchangrankingCrawler(int initPage, int endPage, string gallId, bool isMinor, bool isMini = false)
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
             initDate = new DateTime(1999, 1, 1);
             endDate = DateTime.Now;
             this.initPage = initPage; this.endPage = endPage;
-            this.gallId = gallId; this.isMinor = isMinor;
-            if (this.isMinor) { gallUrl = "https://gall.dcinside.com/mgallery/board/lists?id=" + gallId; }
+            this.gallId = gallId; this.isMinor = isMinor; this.isMini = isMini;
+            if (this.isMini) { gallUrl = "https://gall.dcinside.com/mini/board/lists?id=" + gallId; }
+            else if (this.isMinor) { gallUrl = "https://gall.dcinside.com/mgallery/board/lists?id=" + gallId; }
             else { gallUrl = "https://gall.dcinside.com/board/lists/?id=" + gallId; }
             GallCheck(gallUrl);
             Console.WriteLine(gallName);
         }
-        public GallchangrankingCrawler(DateTime initDate, DateTime endDate, string gallId, bool isMinor, int initPage = 1)
+        public GallchangrankingCrawler(DateTime initDate, DateTime endDate, string gallId, bool isMinor, int initPage = 1, bool isMini = false)
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
             this.initPage = initPage; this.endPage = 1000000000;
             this.initDate = initDate; this.endDate = endDate;
-            this.gallId = gallId; this.isMinor = isMinor;
-            if (this.isMinor) { gallUrl = "https://gall.dcinside.com/mgallery/board/lists?id=" + gallId; }
+            this.gallId = gallId; this.isMinor = isMinor; this.isMini = isMini;
+            if (this.isMini) { gallUrl = "https://gall.dcinside.com/mini/board/lists?id=" + gallId; }
+            else if (this.isMinor) { gallUrl = "https://gall.dcinside.com/mgallery/board/lists?id=" + gallId; }
             else { gallUrl = "https://gall.dcinside.com/board/lists/?id=" + gallId; }
         }
         public GallchangrankingCrawler()
@@ -692,7 +694,7 @@ gcrk.Crawler();
                     totalGallCount += user.gallCount; totalGallRecommend += user.gallRecommend;
                 }
                 sw.WriteLine("총 글수: " + totalCount.ToString());
-                sw.WriteLine("갤창랭킹 v2.1.0 (Original by hanel2527, Updated by SlausonArch)");
+                sw.WriteLine("갤창랭킹 v2.1.1 (Original by hanel2527, Updated by SlausonArch)");
                 sw.WriteLine("랭킹\t닉\t글 수\t갤 지분");
                 int index = 0;
                 int rank = 0;
@@ -746,7 +748,7 @@ gcrk.Crawler();
                 }
                 sw.Write("<table width='100%' style='border-collapse:collapse' border='1' bordercolor='purple'>");
                 sw.Write("<tr align='center'> <td colspan='5'>" + "총 글 수: " + totalCount.ToString() + "</td></tr>");
-                sw.Write("<tr align='center'> <td colspan='5'>"+ "갤창랭킹 v2.1.0<br>(Original by hanel2527, Updated by SlausonArch)" + "</td></tr>");
+                sw.Write("<tr align='center'> <td colspan='5'>"+ "갤창랭킹 v2.1.1<br>(Original by hanel2527, Updated by SlausonArch)" + "</td></tr>");
                 string[] strInfos = { "랭킹", "닉", "아이디/아이피", "글 수", "갤 지분(%)" };
                 sw.WriteLine(TableMaker(strInfos));
                 int index = 0;

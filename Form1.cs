@@ -15,7 +15,7 @@ namespace DcCrawler.WF
 {
     public partial class Form1 : Form
     {
-        public string version = "v2.1.0";
+        public string version = "v2.1.1";
         public Form1()
         {
             InitializeComponent();
@@ -42,11 +42,25 @@ namespace DcCrawler.WF
         {
             updateLinkLabel.Text = (string)text;
         }
+        private void isMinor_CheckedChanged(object sender, EventArgs e)
+        {
+            if (isMinor.Checked)
+            {
+                isMini.Checked = false;
+            }
+        }
+        private void isMini_CheckedChanged(object sender, EventArgs e)
+        {
+            if (isMini.Checked)
+            {
+                isMinor.Checked = false;
+            }
+        }
         private void gallCheckBtn_Click(object sender, EventArgs e)
         {
             try
             {
-                hdc.GallchangrankingCrawler tempGcrk = new hdc.GallchangrankingCrawler(1, 2, gallIdTextBox.Text, isMinor.Checked);
+                hdc.GallchangrankingCrawler tempGcrk = new hdc.GallchangrankingCrawler(1, 2, gallIdTextBox.Text, isMinor.Checked, isMini.Checked);
                 textConsole.AppendText(tempGcrk.gallName + "\r\n");
             }
             catch (Exception ex)
@@ -109,14 +123,14 @@ namespace DcCrawler.WF
                 DateTime modifiedInitDate = new DateTime(initDate.Value.Year, initDate.Value.Month, initDate.Value.Day, 0, 0, 0);
                 DateTime modifiedEndDate = new DateTime(endDate.Value.Year, endDate.Value.Month, endDate.Value.Day, 23, 59, 59);
                  gcrk = new hdc.GallchangrankingCrawler(
-                    modifiedInitDate, modifiedEndDate, gallIdTextBox.Text, isMinor.Checked, int.Parse(initPageText.Text));
+                    modifiedInitDate, modifiedEndDate, gallIdTextBox.Text, isMinor.Checked, int.Parse(initPageText.Text), isMini.Checked);
             }
             else
             {
                 pageProgressBar.Maximum = int.Parse(endPageText.Text) - int.Parse(initPageText.Text) + 1;
                 pageProgressBar.Step = 1;
                 gcrk = new hdc.GallchangrankingCrawler(
-                    int.Parse(initPageText.Text), int.Parse(endPageText.Text), gallIdTextBox.Text, isMinor.Checked);
+                    int.Parse(initPageText.Text), int.Parse(endPageText.Text), gallIdTextBox.Text, isMinor.Checked, isMini.Checked);
             }
             textConsole.AppendText("갤창랭킹\r\n");
             gcrk.newPageHappened += NewPageUpdate;

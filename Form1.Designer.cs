@@ -64,6 +64,7 @@ namespace DcCrawler.WF
             this.label1 = new System.Windows.Forms.Label();
             this.gallCheckBtn = new System.Windows.Forms.Button();
             this.isMinor = new System.Windows.Forms.CheckBox();
+            this.isMini = new System.Windows.Forms.CheckBox();
             this.pageProgressBar = new System.Windows.Forms.ProgressBar();
             this.tabPages = new System.Windows.Forms.TabControl();
             this.dataToText.SuspendLayout();
@@ -214,6 +215,7 @@ namespace DcCrawler.WF
             this.gcrkCrawler.Controls.Add(this.label1);
             this.gcrkCrawler.Controls.Add(this.gallCheckBtn);
             this.gcrkCrawler.Controls.Add(this.isMinor);
+            this.gcrkCrawler.Controls.Add(this.isMini);
             this.gcrkCrawler.Controls.Add(this.pageProgressBar);
             this.gcrkCrawler.Location = new System.Drawing.Point(4, 25);
             this.gcrkCrawler.Name = "gcrkCrawler";
@@ -338,7 +340,7 @@ namespace DcCrawler.WF
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(226, 15);
             this.label5.TabIndex = 16;
-            this.label5.Text = "갤창랭킹 v2.1.0 (Original by hanel2527, Updated by SlausonArch)";
+            this.label5.Text = "갤창랭킹 v2.1.1 (Original by hanel2527, Updated by SlausonArch)";
             // 
             // endDate
             // 
@@ -427,6 +429,18 @@ namespace DcCrawler.WF
             this.isMinor.TabIndex = 1;
             this.isMinor.Text = "마이너 갤러리";
             this.isMinor.UseVisualStyleBackColor = true;
+            this.isMinor.CheckedChanged += new System.EventHandler(this.isMinor_CheckedChanged);
+            // 
+            // isMini
+            // 
+            this.isMini.AutoSize = true;
+            this.isMini.Location = new System.Drawing.Point(140, 80);
+            this.isMini.Name = "isMini";
+            this.isMini.Size = new System.Drawing.Size(110, 19);
+            this.isMini.TabIndex = 2;
+            this.isMini.Text = "미니 갤러리";
+            this.isMini.UseVisualStyleBackColor = true;
+            this.isMini.CheckedChanged += new System.EventHandler(this.isMini_CheckedChanged);
             // 
             // pageProgressBar
             // 
@@ -452,7 +466,7 @@ namespace DcCrawler.WF
             this.ClientSize = new System.Drawing.Size(800, 501);
             this.Controls.Add(this.tabPages);
             this.Name = "Form1";
-            this.Text = "갤창랭킹.v2.1.0";
+            this.Text = "갤창랭킹.v2.1.1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.dataToText.ResumeLayout(false);
             this.dataToText.PerformLayout();
@@ -496,6 +510,7 @@ namespace DcCrawler.WF
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button gallCheckBtn;
         private System.Windows.Forms.CheckBox isMinor;
+        private System.Windows.Forms.CheckBox isMini;
         private System.Windows.Forms.ProgressBar pageProgressBar;
         private System.Windows.Forms.TabControl tabPages;
         private System.Windows.Forms.LinkLabel linkLabel2;
