@@ -1,4 +1,4 @@
-﻿namespace DcCrawler.WF
+namespace DcCrawler.WF
 {
     partial class Form1
     {
@@ -250,7 +250,7 @@
             this.linkLabel2.Size = new System.Drawing.Size(167, 15);
             this.linkLabel2.TabIndex = 25;
             this.linkLabel2.TabStop = true;
-            this.linkLabel2.Text = "문의는 리터칭 갤러리로";
+            this.linkLabel2.Text = "문의는 아일라 갤러리로";
             this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
             // 
             // linkLabel1
@@ -338,7 +338,7 @@
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(226, 15);
             this.label5.TabIndex = 16;
-            this.label5.Text = "갤창랭킹 2.0 made by hanel2527";
+            this.label5.Text = "갤창랭킹 v2.1.0 (Original by hanel2527, Updated by SlausonArch)";
             // 
             // endDate
             // 
@@ -452,7 +452,7 @@
             this.ClientSize = new System.Drawing.Size(800, 501);
             this.Controls.Add(this.tabPages);
             this.Name = "Form1";
-            this.Text = "갤창랭킹.v2.0.9.3";
+            this.Text = "갤창랭킹.v2.1.0";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.dataToText.ResumeLayout(false);
             this.dataToText.PerformLayout();

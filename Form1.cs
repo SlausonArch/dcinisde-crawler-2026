@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -15,7 +15,7 @@ namespace DcCrawler.WF
 {
     public partial class Form1 : Form
     {
-        public string version = "v2.0.9.3";
+        public string version = "v2.1.0";
         public Form1()
         {
             InitializeComponent();
@@ -44,9 +44,15 @@ namespace DcCrawler.WF
         }
         private void gallCheckBtn_Click(object sender, EventArgs e)
         {
-            hdc.GallchangrankingCrawler tempGcrk = new hdc.GallchangrankingCrawler(1, 2, gallIdTextBox.Text, isMinor.Checked);
-            tempGcrk.GallCheck(tempGcrk.gallUrl);
-            textConsole.AppendText(tempGcrk.gallName);
+            try
+            {
+                hdc.GallchangrankingCrawler tempGcrk = new hdc.GallchangrankingCrawler(1, 2, gallIdTextBox.Text, isMinor.Checked);
+                textConsole.AppendText(tempGcrk.gallName + "\r\n");
+            }
+            catch (Exception ex)
+            {
+                textConsole.AppendText("갤러리 확인 실패: " + ex.Message + "\r\n");
+            }
         }
 
         private void NewPageUpdate(object sender, EventArgs e)
@@ -204,7 +210,7 @@ namespace DcCrawler.WF
         private void updateLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             this.updateLinkLabel.LinkVisited = true;
-            System.Diagnostics.Process.Start("https://github.com/hanel2527/dcinisde-crawler.ver.2/releases/latest");
+            System.Diagnostics.Process.Start("https://github.com/SlausonArch/dcinisde-crawler.ver.2/releases/latest");
         }
 
         private void SaveButton_Click(object sender, EventArgs e)

@@ -1,4 +1,4 @@
-﻿using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;
 using System.Net;
 using System.IO;
 using System.Collections.Generic;
@@ -277,6 +277,23 @@ gcrk.Crawler();
         }
     }
 
+    public class DcWebClient : WebClient
+    {
+        protected override WebRequest GetWebRequest(Uri address)
+        {
+            HttpWebRequest request = base.GetWebRequest(address) as HttpWebRequest;
+            if (request != null)
+            {
+                request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
+                request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8";
+                request.Headers.Add("Accept-Language", "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7");
+                request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+                request.Timeout = 10000;
+            }
+            return request;
+        }
+    }
+
     public class GallchangrankingCrawler
     {
         public event EventHandler newPageHappened;
@@ -287,12 +304,13 @@ gcrk.Crawler();
         int initPage, endPage;
         DateTime initDate, endDate;
         bool isMinor;
-        public string gallId, gallName, gallUrl, version = "v2.0.8-beta";
+        public string gallId, gallName, gallUrl, version = "v2.1.0";
         List<UserRank> userList = new List<UserRank>();
         //List<UserData> gallDatas = new List<UserData>();
 
         public GallchangrankingCrawler(int initPage, int endPage, string gallId, bool isMinor)
         {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
             initDate = new DateTime(1999, 1, 1);
             endDate = DateTime.Now;
             this.initPage = initPage; this.endPage = endPage;
@@ -304,27 +322,39 @@ gcrk.Crawler();
         }
         public GallchangrankingCrawler(DateTime initDate, DateTime endDate, string gallId, bool isMinor, int initPage = 1)
         {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
             this.initPage = initPage; this.endPage = 1000000000;
             this.initDate = initDate; this.endDate = endDate;
             this.gallId = gallId; this.isMinor = isMinor;
             if (this.isMinor) { gallUrl = "https://gall.dcinside.com/mgallery/board/lists?id=" + gallId; }
             else { gallUrl = "https://gall.dcinside.com/board/lists/?id=" + gallId; }
         }
-        public GallchangrankingCrawler() { }
+        public GallchangrankingCrawler()
+        {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+        }
         public void GallCheck(string gallUrl)
         {
-            var client = new WebClient();
-            client.Encoding = System.Text.Encoding.UTF8;
-            string text = client.DownloadString(gallUrl);
-            hap.HtmlDocument textHap = new hap.HtmlDocument();
             try
             {
+                var client = new DcWebClient();
+                client.Encoding = System.Text.Encoding.UTF8;
+                string text = client.DownloadString(gallUrl);
+                hap.HtmlDocument textHap = new hap.HtmlDocument();
                 textHap.LoadHtml(text);
-                this.gallName = textHap.DocumentNode.SelectSingleNode("//title").InnerText;
+                var titleNode = textHap.DocumentNode.SelectSingleNode("//title");
+                if (titleNode != null)
+                {
+                    this.gallName = titleNode.InnerText;
+                }
+                else
+                {
+                    this.gallName = "갤러리를 찾을 수 없습니다.";
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                this.gallName = "gallNotFoundException";
+                this.gallName = "gallNotFoundException (" + ex.Message + ")";
             }
         }
         int GetOnlyInt(string str)
@@ -341,22 +371,24 @@ gcrk.Crawler();
         }
         public void UpdateChecker(string currentVersion)   //구현
         {
-            string github = "https://github.com/hanel2527/dcinisde-crawler.ver.2/blob/master/versions.txt";
-            var client = new WebClient();
-            client.Encoding = System.Text.Encoding.UTF8;
-            string text = client.DownloadString(github);
-            hap.HtmlDocument doc = new hap.HtmlDocument();
-            doc.LoadHtml(text);
-            hap.HtmlNode myVersions = doc.DocumentNode.
-                SelectSingleNode("//table[@class='highlight tab-size js-file-line-container']");
-            text = myVersions.InnerText.Trim();
-            string[] versions = text.Split(new[] { ' ', '\r', '\n', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-            if (NewVersionUpdateExist != null)
+            try
             {
-                if (versions[0].Equals(currentVersion))
-                    NewVersionUpdateExist("최신 버전입니다: " + versions[0], null);
-                else
-                    NewVersionUpdateExist("새로운 업데이트가 있습니다(클릭): " + versions[0], null);
+                string rawGithub = "https://raw.githubusercontent.com/SlausonArch/dcinisde-crawler.ver.2/master/versions.txt";
+                var client = new DcWebClient();
+                client.Encoding = System.Text.Encoding.UTF8;
+                string text = client.DownloadString(rawGithub);
+                string[] versions = text.Split(new[] { ' ', '\r', '\n', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                if (versions.Length > 0 && NewVersionUpdateExist != null)
+                {
+                    if (versions[0].Equals(currentVersion))
+                        NewVersionUpdateExist("최신 버전입니다: " + versions[0], null);
+                    else
+                        NewVersionUpdateExist("새로운 업데이트가 있습니다(클릭): " + versions[0], null);
+                }
+            }
+            catch
+            {
+                // 업데이트 확인 실패 시 무시
             }
         }
         public void Crawler()
@@ -366,7 +398,7 @@ gcrk.Crawler();
 
             string url = gallUrl + "&page=";
 
-            var client = new WebClient();
+            var client = new DcWebClient();
             client.Encoding = System.Text.Encoding.UTF8;
             //Dictionary value => count, replyNum, gallCount, gallRecommend
             Dictionary<UserInfo, int[]> userDic = new Dictionary<UserInfo, int[]>();
@@ -553,7 +585,7 @@ gcrk.Crawler();
         };
         public List<UserRank> userList = new List<UserRank>();
         List<UserData> gallDatas = new List<UserData>();
-        public string filename { get; }
+        public string filename { get; private set; }
 
         public DataToText(string filename)
         {
@@ -660,7 +692,7 @@ gcrk.Crawler();
                     totalGallCount += user.gallCount; totalGallRecommend += user.gallRecommend;
                 }
                 sw.WriteLine("총 글수: " + totalCount.ToString());
-                sw.WriteLine("갤창랭킹 2.0 made by hanel2527, 마이 리틀 포니 갤러리");
+                sw.WriteLine("갤창랭킹 v2.1.0 (Original by hanel2527, Updated by SlausonArch)");
                 sw.WriteLine("랭킹\t닉\t글 수\t갤 지분");
                 int index = 0;
                 int rank = 0;
@@ -714,7 +746,7 @@ gcrk.Crawler();
                 }
                 sw.Write("<table width='100%' style='border-collapse:collapse' border='1' bordercolor='purple'>");
                 sw.Write("<tr align='center'> <td colspan='5'>" + "총 글 수: " + totalCount.ToString() + "</td></tr>");
-                sw.Write("<tr align='center'> <td colspan='5'>"+ "갤창랭킹 2.0 made by hanel2527,<br>마이 리틀 포니 갤러리" + "</td></tr>");
+                sw.Write("<tr align='center'> <td colspan='5'>"+ "갤창랭킹 v2.1.0<br>(Original by hanel2527, Updated by SlausonArch)" + "</td></tr>");
                 string[] strInfos = { "랭킹", "닉", "아이디/아이피", "글 수", "갤 지분(%)" };
                 sw.WriteLine(TableMaker(strInfos));
                 int index = 0;

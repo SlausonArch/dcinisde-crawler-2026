@@ -1,74 +1,115 @@
-# 갤창랭킹 2.0 made by hanel2527
+# 갤창랭킹 v2.1.0
 
-갤창랭킹 프로그램 다운로드, 잉여랭킹, 디씨랭킹, 디시랭킹, 디시인사이드
+디시인사이드(DCInside) 갤러리의 게시글 데이터를 크롤링하여 갤러들의 활동 순위(갤창랭킹)를 집계하는 Windows GUI 프로그램입니다.
 
-기본 갤창랭킹을 C#을 이용해 다시 만든 버전입니다.
+> **Note**: 본 프로젝트는 [hanel2527](https://github.com/hanel2527) 님의 `dcinisde-crawler.ver.2`를 기반으로, 최신 디시인사이드 차단 우회 및 버그 패치를 적용한 유지보수 버전입니다.
+> 
+> - **Original Author**: hanel2527
+> - **Maintainer / Updated by**: [SlausonArch](https://github.com/SlausonArch)
 
-.NET FRAMEWORK 4.6.1
+---
 
-외부 라이브러리: HtmlAgilityPack, Json.NET
+## 🚀 다운로드
+최신 실행 파일은 아래 릴리즈 링크에서 다운로드하실 수 있습니다:
+### 👉 [갤창랭킹 최신 버전 다운로드 (Releases)](https://github.com/SlausonArch/dcinisde-crawler.ver.2/releases)
 
+---
 
-## 다운로드 [갤창랭킹.v2.0.9.3](https://github.com/hanel2527/dcinisde-crawler.ver.2/releases)
+## 🛠️ v2.1.0 패치 내역 (2026.09)
 
-- GUI 적용(Windows Forms)
+- **디시인사이드 503 오류(서버 사용할 수 없음) 해결**:
+  - 디시인사이드 서버의 봇/크롤러 차단에 대응하여 브라우저 `User-Agent` 및 `Accept` 헤더, gzip 자동 압축 해제를 전송하는 `DcWebClient` 구현
+  - 연속 크롤링 시 `WebClient` 헤더 초기화로 인한 503 재발 현상 해결
+- **보안 프로토콜(TLS 1.2) 지원**:
+  - .NET Framework 환경에서 HTTPS 통신 시 TLS 1.2 보안 프로토콜을 명시적으로 활성화
+- **프로그램 안정성 및 예외 처리 강화**:
+  - 갤러리 확인 및 크롤링 중 네트워크 오류 발생 시 프로그램이 비정상 종료(크래시)되지 않도록 예외 처리 추가
+  - GitHub 원시(Raw) 파일 기반으로 버전 확인 로직 개선
+- **빌드 및 호환성 개선**:
+  - 프로젝트 내 라이브러리 참조 경로 개선 및 VS Code 빌드/디버그 태스크(`tasks.json`, `launch.json`) 추가
 
-- 날짜 기준으로 크롤링
+---
 
-- 같은 글 중복 카운팅 방지
+## 📌 주요 기능
 
-- 통피 ㅇㅇ, 같은 닉 유동 및 같은 아이디 고닉 자동 합치기
+- **직관적인 GUI**: Windows Forms 기반 데스크톱 애플리케이션
+- **유연한 수집 기준**: 페이지 범위 또는 날짜 범위 지정 크롤링
+- **중복 방지**: 동일 게시글 중복 카운팅 방지
+- **동일 갤러 자동 병합**:
+  - 통신사 IP(통피) 식별, 동일 닉네임 유동 및 동일 아이디 고정닉 자동 병합
+  - 수동 병합 기능 지원
+- **다양한 저장 포맷**:
+  - 텍스트 파일(`.txt`) 저장
+  - 디시인사이드 게시글용 HTML 표(`<table>`) 형식 저장
 
-- 표로 저장 기능 추가
+---
 
-## 사용법
+## 💻 실행 환경 및 요구사항
 
+- **운영체제**: Windows 7 / 8 / 10 / 11
+- **런타임**: [.NET Framework 4.6.1](https://dotnet.microsoft.com/download/dotnet-framework/net461) 이상
+- **외부 종속 라이브러리**:
+  - HtmlAgilityPack (v1.11.9)
+  - Newtonsoft.Json (v12.0.2)
+
+---
+
+## 📖 사용 방법
+
+### 1. 갤러리 정보 입력 및 크롤링
 ![use01.png](./img/use01.png)
-
-1. 갤 ID 입력: https://gall.dcinside.com/board/lists?id=mlp 에서 mlp
-
-2. 시작 페이지 입력
-
-3. 날짜 기준으로 할 경우 날짜 입력
-
-4. 갤창랭킹 시작
+1. **갤 ID 입력**: `https://gall.dcinside.com/board/lists?id=programming` 의 경우 `programming` 입력 (마이너 갤러리는 '마이너 갤러리' 체크)
+2. **페이지 또는 날짜 설정**: 시작 페이지 및 끝 페이지(또는 날짜 범위) 지정
+3. **갤창랭킹 시작** 클릭
 
 ![use02.png](./img/use02.png)
+4. 크롤링 진행 후 완료 메시지 및 순위 요약 확인
 
-5. 갤창랭킹 완료
+---
 
+### 2. 데이터 불러오기 및 동일 갤러 합치기
 ![use03.png](./img/use03.png)
-
-6. 동일닉 처리 및 텍스트 파일로 저장
-
-7. 데이터 목록 불러오기
-
-8. 데이터 선택 (갤id_연월일_시분초.json)
+5. **데이터 목록 불러오기** 클릭 후 수집된 데이터 파일(`갤id_연월일_시분초.json`) 선택
 
 ![use04.png](./img/use04.png)
+6. **동일 갤러 자동 처리** 클릭: 동일 고닉 및 유동 닉네임이 자동으로 합쳐집니다.
+7. 자동 처리되지 않은 사용자는 체크박스 선택 후 **동일 갤러 합치기**를 클릭하여 수동 병합 가능
 
-9. 동일 갤러 자동 처리(동일 고닉, 유동 자동 합치기)
+---
 
-10. 자동 처리 되지 않은 고닉은 체크 -> 동일 갤러 합치기 누르면 합쳐짐
-
+### 3. 결과 파일 저장 및 디시 글 작성
 ![use06.png](./img/use06.png)
-
-11. 파일 저장
-
-* 텍스트 파일로 저장: 그냥 텍스트 파일
-
-* 표로 저장: html 테이블로 저장
+8. **파일 저장** 선택:
+   - **텍스트 파일로 저장**: 일반 텍스트 형식으로 저장
+   - **표로 저장**: 디시 글쓰기에 바로 넣을 수 있는 HTML 테이블 형식으로 저장
 
 ![use07.png](./img/use07.png)
-
-12. 파일은 results 폴더 안에 있음
+9. 저장된 결과물은 프로그램 폴더 내 `results` 폴더에 생성됩니다.
 
 ![use08.png](./img/use08.png)
-
 ![use09.png](./img/use09.png)
 
-13. 표로 저장했을 경우 -> 복붙 -> 글쓰기 -> 오른쪽 위 HTML 체크 -> 붙여넣기
+10. **디시인사이드에 올리는 법**:
+    - HTML 파일 내용 복사
+    - 갤러리 글쓰기 화면 우측 상단의 **HTML 체크박스** 활성화 후 붙여넣기
+    - HTML 체크 해제 시 표가 깔끔하게 렌더링됩니다.
 
 ![use10.png](./img/use10.png)
 
-14. HTML 체크 해제시 표가 보임
+---
+
+## ⚖️ 라이선스 (License)
+
+This project is licensed under the **Apache License 2.0**.
+자세한 내용은 [LICENSE](./LICENSE) 파일을 참고하시기 바랍니다.
+
+```
+Copyright (c) 2019 hanel2527
+Copyright (c) 2026 SlausonArch
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+```
