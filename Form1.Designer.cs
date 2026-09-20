@@ -258,7 +258,7 @@ namespace DcCrawler.WF
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(384, 3);
+            this.linkLabel1.Location = new System.Drawing.Point(675, 3);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(107, 15);
             this.linkLabel1.TabIndex = 24;
