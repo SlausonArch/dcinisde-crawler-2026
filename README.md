@@ -11,7 +11,7 @@
 
 ## 🚀 다운로드
 최신 실행 파일은 아래 릴리즈 링크에서 다운로드하실 수 있습니다:
-### 👉 [갤창랭킹 최신 버전 다운로드 (Releases)](https://github.com/SlausonArch/dcinisde-crawler.ver.2/releases)
+### 👉 [갤창랭킹 최신 버전 다운로드 (Releases)](https://github.com/SlausonArch/dcinisde-crawler-2026/releases)
 
 ---
 
