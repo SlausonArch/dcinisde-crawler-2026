@@ -373,7 +373,7 @@ gcrk.Crawler();
         {
             try
             {
-                string rawGithub = "https://raw.githubusercontent.com/SlausonArch/dcinisde-crawler.ver.2/master/versions.txt";
+                string rawGithub = "https://raw.githubusercontent.com/SlausonArch/dcinisde-crawler-2026/master/versions.txt";
                 var client = new DcWebClient();
                 client.Encoding = System.Text.Encoding.UTF8;
                 string text = client.DownloadString(rawGithub);

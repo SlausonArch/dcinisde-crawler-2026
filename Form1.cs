@@ -204,13 +204,13 @@ namespace DcCrawler.WF
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             this.linkLabel2.LinkVisited = true;
-            System.Diagnostics.Process.Start("https://gall.dcinside.com/board/lists?id=retouching");
+            System.Diagnostics.Process.Start("https://gall.dcinside.com/mgallery/board/lists/?id=islay");
         }
 
         private void updateLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             this.updateLinkLabel.LinkVisited = true;
-            System.Diagnostics.Process.Start("https://github.com/SlausonArch/dcinisde-crawler.ver.2/releases/latest");
+            System.Diagnostics.Process.Start("https://github.com/SlausonArch/dcinisde-crawler-2026/releases/latest");
         }
 
         private void SaveButton_Click(object sender, EventArgs e)
