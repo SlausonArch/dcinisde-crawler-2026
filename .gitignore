@@ -260,5 +260,6 @@ paket-files/
 __pycache__/
 *.pyc
 
-# Archives
+# Archives and release folders
 *.zip
+gallchangranking*/

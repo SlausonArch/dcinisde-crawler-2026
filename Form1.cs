@@ -199,7 +199,7 @@ namespace DcCrawler.WF
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             this.linkLabel1.LinkVisited = true;
-            System.Diagnostics.Process.Start("https://gall.dcinside.com/board/view/?id=retouching&no=7413");
+            System.Diagnostics.Process.Start("https://github.com/SlausonArch/dcinisde-crawler-2026/blob/master/README.md");
         }
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
